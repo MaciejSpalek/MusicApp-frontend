@@ -1,11 +1,8 @@
-import { getSession } from "./session";
+import { authFetch } from "./authFetch";
 
 export const getProfile = async () => {
-  const session = await getSession();
-  const response = await fetch(`${process.env.API_URL}/auth/protected`, {
-    headers: { authorization: `Bearer ${session?.accessToken}` },
-  });
-
+  const response = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/protected`)
   const result = await response.json();
+
   return result;
 };

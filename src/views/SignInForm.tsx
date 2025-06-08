@@ -13,7 +13,7 @@ export const SignInForm = () => {
   const [state, action] = useActionState(singIn, undefined);
 
   return (
-    <form className="flex flex-col gap-4 w-full" action={action} >
+    <form className="flex flex-col gap-4 w-full" action={action}>
       {state?.message && <p className="text-red-500">{state.message}</p>}
 
       <div className="w-full">
@@ -46,6 +46,12 @@ export const SignInForm = () => {
       <Button className="h-12 text-md" type="submit" aria-disabled={pending}>
         Log in
       </Button>
+      <a
+        className="flex justify-center border px-4 py-2 rounded bg-sky-600 text-white w-full"
+        href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google/login`}
+      >
+        Sign in with google
+      </a>
     </form>
   );
 };

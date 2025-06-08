@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
 
 export default function AuthLayout({ children }: PropsWithChildren) {
-  return <div className="bg-gradient-to-br flex items-center justify-center from-lime-400 h-screen">{children}</div>;
+  return <div className="flex items-center justify-center h-screen bg-gray-50">{children}</div>;
 }

@@ -1,10 +1,10 @@
 import { refreshToken } from "./auth";
 import { getSession } from "./session";
 
-
 export interface FetchOptions extends RequestInit {
-    headers?: Record<string, string>
+  headers?: Record<string, string>;
 }
+
 export const authFetch = async (
   url: string | URL,
   options: FetchOptions = {}
@@ -16,17 +16,22 @@ export const authFetch = async (
     Authorization: `Bearer ${session?.accessToken}`,
   };
   let response = await fetch(url, options);
+  console.log({
+    STATUS: response.status, response: response.url
+  });
 
-  if ((await response).status === 401) {
-    if (!session?.refreshToken) throw new Error("refresh token not found!");
+  if (response.status === 401) {
+    if (!session?.refreshToken)
+      throw new Error("refresh token not found!");
 
-    const newAccessToken = await refreshToken(session.refreshToken);
+    const newAccessToken = await refreshToken(
+      session.refreshToken
+    );
 
-    if(newAccessToken) {
-        options.headers.Authorization = `Bearer ${newAccessToken}`
-        response = await fetch(url, options);
-
-        return response;
+    if (newAccessToken) {
+      options.headers.Authorization = `Bearer ${newAccessToken}`;
+      response = await fetch(url, options);
     }
   }
+  return response;
 };

@@ -1,10 +1,19 @@
+import { authFetch } from "@/src/lib/authFetch";
 import { deleteSession } from "@/src/lib/session";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  await deleteSession();
+  const response = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signout`, {
+    method: "POST",
+  });
 
-  revalidatePath("/");
+  if (response.ok) {
+    await deleteSession();
+  }
+
+  revalidatePath("/", "layout");
+  revalidatePath("/", "page");
+
   return NextResponse.redirect(new URL("/", req.nextUrl));
 }
